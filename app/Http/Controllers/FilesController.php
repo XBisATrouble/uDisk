@@ -7,8 +7,15 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+/**
+ * Class FilesController
+ * @package App\Http\Controllers
+ */
 class FilesController extends Controller
 {
+    /**
+     * @var FileRepositories
+     */
     private $file;
 
     /**
@@ -20,21 +27,28 @@ class FilesController extends Controller
         $this->file = $file; //依赖注入文件仓库
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('files.extract');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function upload(Request $request)
     {
         if($file = $request->file('file')) {
             //控制上传文件类型
-            $allowed_extensions = ["doc", "ppt", "xls","docx","pptx",'pdf'];
+            $allowed_extensions = ["doc", "ppt", "xls","xlsx","docx","pptx",'pdf'];
             if (!$file->getClientOriginalExtension() || !in_array($file->getClientOriginalExtension(), $allowed_extensions)) {
                 return response()->json(['error' => '上传文件格式错误'],200);
             }
 
-            //控制上传文件大小
+            //控制上传文件大小<=10m
             if ($file->getSize()>=10485760){
                 return response()->json(['error' => '上传文件大小超过限制'],200);
             }
@@ -70,6 +84,10 @@ class FilesController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function extract(Request $request)
     {
         //因为复印店普遍使用低版本浏览器，因此采用最基本的 html 表格方式
