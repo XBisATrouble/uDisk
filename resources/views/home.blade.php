@@ -21,6 +21,7 @@
                             <input id="private"  type="hidden" name="private" value="0">
                         @endif
                     {!!Form::close()!!}
+                    <div class="text-info" id="upload" style="display: none"></div>
                 </div>
             </div>
 
@@ -39,7 +40,8 @@
                 dataType: 'json'
             };
             $('#fileForm input[name=file]').on('change', function(){
-                //$('#upload').html('正在上传...');
+                $('#upload').show();
+                $('#upload').html('正在上传...');
                 $('#fileForm').ajaxForm(options).submit();
             });
         });
@@ -50,8 +52,9 @@
         function showResponse(response) {
             if (response.success==true) {
                 $('.upload-file').hide()
+                $('#upload').hide()
                 $('.show-code').show()
-                $(".show-code").append('<div class="alert alert-success">恭喜您上传成功，您的提取码是： <strong>'+ response.code +'</strong><div>');
+                $(".show-code").append('<div class="alert alert-success">上传成功，您的提取码是： <strong>'+ response.code +'</strong><div>');
             } else {
                 $("#validation-errors").append('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"aria-hidden="true"> &times; </button><strong>'+ response.error +'</strong><div>');
             }

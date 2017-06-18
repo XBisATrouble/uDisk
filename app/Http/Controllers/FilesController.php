@@ -62,17 +62,15 @@ class FilesController extends Controller
             $file->move($destinationPath, $fileName);
 
             $anonymous = '2'; //默认用2号用户作为匿名用户
-            $private = $request->get('private')?'T':'F';
-            $times = Auth::check()?50:10;
 
             $attributes=[
-                'path' => $destinationPath.$fileName,
-                'user_id' => Auth::check()?Auth::user()->id:$anonymous,  //添加一个匿名用户anonymous作为未登录用户的账户
+                'path'     => $destinationPath.$fileName,
+                'user_id'  => Auth::check()?Auth::user()->id:$anonymous,  //添加一个匿名用户anonymous作为未登录用户的账户
                 'fileName' => $originalFileName,
-                'private' => $private,
-                'code' => str_random(6),
-                'times' => $times,
-                'ip' => request()->ip(),
+                'private'  => $request->get('private')?'T':'F',
+                'code'     => str_random(6),
+                'times'    => Auth::check()?50:10,
+                'ip'       => request()->ip(),
             ];
             $this->file->create($attributes);
             return response()->json([
@@ -95,24 +93,24 @@ class FilesController extends Controller
         $file=$this->file->getFileByCode($code);
 
         if (!$file){
-            return back()->with('error','未找到相关结果');
+            return back()->with('error','未找到相关结果')->withInput();
             //return response()->json(['error' => '未找到相关结果']);
         }
 
         if ($file->private=='T'){
             if ($file->user->stu_id != $request->get('stu_id')){
-                return back()->with('error','该文件为私密文件，你没有权限下载');
+                return back()->with('error','该文件为私密文件，你没有权限下载')->withInput();
                 //return response()->json(['error' => '该文件为私密文件，你没有权限下载']);
             }
         }
 
         if (!$file->times){
-            return back()->with('error','该文件下载次数已超上限');
+            return back()->with('error','该文件下载次数已超上限')->withInput();
             //return response()->json(['error' => '该文件下载次数已超上限']);
         }
 
         if (!$this->file->decrease($file)){
-            return back()->with('error','下载失败');
+            return back()->with('error','下载失败')->withInput();
             //return response()->json(['error' => '下载失败']);
         }
 

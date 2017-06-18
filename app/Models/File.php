@@ -9,7 +9,7 @@ class File extends Model
 {
     protected $table='files';
 
-    protected $fillable=['path','fileName','code','times','private','user_id'];
+    protected $fillable=['path','fileName','code','times','private','user_id','ip'];
 
     protected $dates = ['delete_at'];
 

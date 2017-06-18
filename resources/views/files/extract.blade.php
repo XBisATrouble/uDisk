@@ -22,7 +22,7 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="code" class="control-label">提取码</label>
-                                <input id="code" name="code" type="text" class="form-control" placeholder="请输入提取码">
+                                <input id="code" name="code" type="text" class="form-control" placeholder="请输入提取码" value="{{ old('code') }}">
                             </div>
                             <div class="form-group">
                                 <label for="stu_id" class="control-label">学号 (若不是私密上传则不用填写)</label>
