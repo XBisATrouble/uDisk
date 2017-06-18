@@ -14,7 +14,7 @@
                             <label for="stu_id" class="col-md-4 control-label">学号</label>
 
                             <div class="col-md-6">
-                                <input id="stu_id" type="stu_id" class="form-control" name="stu_id" value="{{ old('stu_id') }}" required autofocus>
+                                <input id="stu_id" type="text" class="form-control" name="stu_id" value="{{ old('stu_id') }}" required autofocus>
 
                                 @if ($errors->has('stu_id'))
                                     <span class="help-block">

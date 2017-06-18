@@ -12,10 +12,10 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
-    <script src="/js/app.js"></script>
-    <script type="text/javascript" src="js/jquery.form.js"></script>
 
     <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
@@ -37,8 +37,11 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand">
                         云U盘
+                    </a>
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        上传
                     </a>
                     <a class="navbar-brand" href="{{ url('extract') }}">
                         提取

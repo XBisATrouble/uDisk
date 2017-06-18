@@ -7,17 +7,24 @@
             <div class="panel panel-info upload-file">
                 <div class="panel-body">
                     <div id="validation-errors"></div>
-                    {!! Form::open( array('url' =>['/upload'], 'method' => 'post', 'id'=>'imgForm', 'files'=>true) ) !!}
-                    <div class="form-group">
-                        <label>文件上传</label>
-                        <input id="thumb" name="file" type="file"  required="required">
-                        <input id="imgID"  type="hidden" name="id" value="">
-                    </div>
+                    {!! Form::open( array('url' =>['/upload'], 'method' => 'post', 'id'=>'fileForm', 'files'=>true) ) !!}
+                        <label for="file" class="control-label">文件上传</label>
+                        <input id="file" name="file" type="file"  required="required">
+                        <br/>
+                        @if(Auth::check())
+                            <div class="checkbox">
+                                <label>
+                                    <input id="private"  type="checkbox" name="private">是否私密上传
+                                </label>
+                            </div>
+                        @else
+                            <input id="private"  type="hidden" name="private" value="0">
+                        @endif
                     {!!Form::close()!!}
                 </div>
             </div>
 
-            <div class="panel panel-info show-code" style="display: none;"></div>
+            <div class="show-code" style="display: none;"></div>
         </div>
     </div>
 </div>
@@ -31,9 +38,9 @@
                 success:       showResponse,
                 dataType: 'json'
             };
-            $('#imgForm input[name=file]').on('change', function(){
+            $('#fileForm input[name=file]').on('change', function(){
                 //$('#upload').html('正在上传...');
-                $('#imgForm').ajaxForm(options).submit();
+                $('#fileForm').ajaxForm(options).submit();
             });
         });
         function showRequest() {
@@ -44,9 +51,9 @@
             if (response.success==true) {
                 $('.upload-file').hide()
                 $('.show-code').show()
-                $(".show-code").append('<div class="alert">恭喜您上传成功，您的提取码是： <strong>'+ response.code +'</strong><div>');
+                $(".show-code").append('<div class="alert alert-success">恭喜您上传成功，您的提取码是： <strong>'+ response.code +'</strong><div>');
             } else {
-                $("#validation-errors").append('<div class="alert alert-error"><strong>'+ response.error +'</strong><div>');
+                $("#validation-errors").append('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"aria-hidden="true"> &times; </button><strong>'+ response.error +'</strong><div>');
             }
         }
     })

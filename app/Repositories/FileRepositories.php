@@ -21,7 +21,7 @@ class FileRepositories
 
     public function getFileByCode($code)
     {
-        return File::where('code',$code)->first();
+        return File::recent()->where('code',$code)->first();
     }
 
     public function decrease($file)
@@ -29,5 +29,10 @@ class FileRepositories
         $file->times-=1;
         $file->save();
         return true;
+    }
+
+    public function getFilesFeedByUser($id)
+    {
+        return File::recent()->where('user_id',$id)->latest()->get();
     }
 }

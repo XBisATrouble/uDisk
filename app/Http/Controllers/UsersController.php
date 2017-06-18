@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\UserRepositories;
+use App\Repositories\FileRepositories;
 use Auth;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    private $user;
+    private $files;
 
     /**
      * UsersController constructor.
-     * @param $user
+     * @param $files
      */
-    public function __construct(UserRepositories $user)
+    public function __construct(FileRepositories $files)
     {
-        $this->user = $user;
+        $this->files = $files;
     }
+
 
     public function index()
     {
-        $user=$this->user->getUserFeed(Auth::user()->id);
-        return view('user.index',compact('user'));
+        $files=$this->files->getFilesFeedByUser(Auth::user()->id);
+        return view('auth.index',compact('files'));
     }
 }
